@@ -11,13 +11,15 @@ public class Customer {
     private String name;
     private String ssn;
     private String number;
+    private String password;
     private Payment paymentId;
 
-    public Customer(int id, String name, String ssn, String number, Payment paymentId){
+    public Customer(int id, String name, String ssn, String number, String password, Payment paymentId){
         this.id = id;
         this.name = name;
         this.ssn = ssn;
         this.number = number;
+        this.password = password;
         this.paymentId = paymentId;
     }
 
@@ -26,6 +28,7 @@ public class Customer {
     public String getName(){return name;}
     public String getSsn(){return ssn;}
     public String getNumber(){return number;}
+    public String getPassword(){return password;}
     public Payment getPaymentId(){return paymentId;}
 
     @Override

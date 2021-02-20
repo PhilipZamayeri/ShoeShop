@@ -81,9 +81,10 @@ public class Repository {
                 String name = rs.getString("name");
                 String ssn = rs.getString("ssn");
                 String number = rs.getString("number");
+                String password = rs.getString("password");
                 Payment payment = new Payment(rs.getInt("payment_id"), rs.getString("method"));
 
-                customers.add(new Customer(id, name, ssn, number, payment));
+                customers.add(new Customer(id, name, ssn, number, password, payment));
             }
 
         } catch (Exception e) {
@@ -111,6 +112,7 @@ public class Repository {
         }
     }
 
+
     /*
     public void printOrder(){
             ResultSet rs = null;
@@ -127,6 +129,19 @@ public class Repository {
         }
      */
 
+
+/*    public String addOrder(int ){
+        ResultSet res = null;
+        String query = "CALL addOrder";
+
+        try{
+            Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+
+            CallableStatement stmt = con.prepareCall(query);
+        }
+    }*/
 
 
     public static void main(String[] args) {new Repository();}

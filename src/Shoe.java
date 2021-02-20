@@ -28,6 +28,8 @@ public class Shoe {
     public Price getPriceId(){return priceId;}
     public Brand getBrandId(){return brandId;}
 
+
+
     @Override
     public String toString() {
         return "Shoe{" +
