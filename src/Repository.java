@@ -13,9 +13,9 @@ import java.util.Properties;
  * Copyright: MIT
  */
 public class Repository {
-    public static Properties p = new Properties();
-    public static List<Product> products = new ArrayList<>();
-    public static List<Customer> customers = new ArrayList<>();
+    public Properties p = new Properties();
+    public List<Product> products = new ArrayList<>();
+    public List<Customer> customers = new ArrayList<>();
 
     public Repository() {
         try {
@@ -27,11 +27,9 @@ public class Repository {
 
         getAllShoes();
         getAllCustomers();
-        printShoes();
-        printCustomers();
     }
 
-    public static Connection addConnection() throws SQLException {
+    public Connection addConnection() throws SQLException {
         Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
                 p.getProperty("name"),
                 p.getProperty("password"));
@@ -39,7 +37,7 @@ public class Repository {
     }
 
 
-    public static void getAllShoes() {
+    public void getAllShoes() {
 
         try (Connection con = addConnection();
              Statement stat = con.createStatement();
@@ -68,7 +66,7 @@ public class Repository {
         }
     }
     
-    public static void getAllCustomers(){
+    public void getAllCustomers(){
 
         try (Connection con = addConnection();
              Statement stat = con.createStatement();
@@ -81,9 +79,10 @@ public class Repository {
                 String name = rs.getString("name");
                 String ssn = rs.getString("ssn");
                 String number = rs.getString("number");
+                String password = rs.getString("password");
                 Payment payment = new Payment(rs.getInt("payment_id"), rs.getString("method"));
 
-                customers.add(new Customer(id, name, ssn, number, payment));
+                customers.add(new Customer(id, name, ssn, number, password, payment));
             }
 
         } catch (Exception e) {
@@ -91,17 +90,19 @@ public class Repository {
         }
     }
 
-    public static void printShoes(){
+    public void printShoes(){
         int x = 0;
+        int y = 1;
         for (int i = 0; i < 9; i++){
-            System.out.println(products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + "\nfärg: " +
+            System.out.println("Sko nr: " + y + "\n"+products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + "\nfärg: " +
                     products.get(x).getColor().getType() + "\nstorlek: " + products.get(x).getSize().getSize()
                     + "\npris: " + products.get(x).getPrice().getAmount() + "\n");
             x++;
+            y++;
         }
     }
 
-    public static void printCustomers(){
+    public void printCustomers(){
         int x = 0;
         for (int i = 0; i < 5; i++){
             System.out.println(customers.get(x).getName() + ", " + customers.get(x).getSsn() + "\nnummer: " +
@@ -117,7 +118,7 @@ public class Repository {
             try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
                     p.getProperty("name"),
                     p.getProperty("password"))){
-                CallableStatement stmt = con.prepareCall("call addpresent(?)");
+                CallableStatement stmt = con.prepareCall("call AddToCart(?)");
                 stmt.setString(1,name);
                 stmt.execute();
 
@@ -129,7 +130,7 @@ public class Repository {
 
 
 
-    public static void main(String[] args) {new Repository();}
+    public static void main(String[] args) { new Repository();}
 }
 
 
