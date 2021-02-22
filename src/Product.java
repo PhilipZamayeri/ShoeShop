@@ -13,14 +13,16 @@ public class Product {
     private Sizing size;
     private Model model;
     private Brand brand;
+    private String stock;
 
-    public Product(int id, Price price, Color color, Sizing size, Model model, Brand brand) {
+    public Product(int id, Price price, Color color, Sizing size, Model model, Brand brand, String stock) {
         this.id = id;
         this.price = price;
         this.color = color;
         this.size = size;
         this.model = model;
         this.brand = brand;
+        this.stock = stock;
     }
 
     public int getId() {
@@ -43,10 +45,9 @@ public class Product {
         return model;
     }
 
-    public Brand getBrand() {
-        return brand;
+    public Brand getBrand() {return brand;}
 
-    }
+    public String getStock(){return stock;}
 
     @Override
     public String toString() {
