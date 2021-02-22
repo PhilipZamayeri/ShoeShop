@@ -52,7 +52,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Modelct{" +
+        return "Model{" +
                 "id=" + id +
                 ", price=" + price +
                 ", color=" + color +
