@@ -15,7 +15,8 @@ import java.util.Properties;
 public class Repository {
     public Properties p = new Properties();
     public List<Product> products = new ArrayList<>();
-    public List<Customer> customers = new ArrayList<>();
+
+    public int returOrderID = 0;
 
     public Repository() {
         try {
@@ -35,7 +36,6 @@ public class Repository {
                 p.getProperty("password"));
         return con;
     }
-
 
     public void getAllShoes() {
 
@@ -65,9 +65,9 @@ public class Repository {
             e.printStackTrace();
         }
     }
-    
-    public void getAllCustomers(){
 
+    public List<Customer> getAllCustomers(){
+        List<Customer> customers = new ArrayList<>();
         try (Connection con = addConnection();
              Statement stat = con.createStatement();
              ResultSet rs = stat.executeQuery("SELECT * FROM customer " +
@@ -88,6 +88,29 @@ public class Repository {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return customers;
+    }
+
+    public void getOrders(){
+        try (Connection con = addConnection();
+             Statement stat = con.createStatement();
+             ResultSet rs = stat.executeQuery("SELECT * FROM added " +
+                     "JOIN shoe ON added.shoe_id = shoe.id")){
+
+
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String ssn = rs.getString("ssn");
+                String number = rs.getString("number");
+                String password = rs.getString("password");
+                Payment payment = new Payment(rs.getInt("payment_id"), rs.getString("method"));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void printShoes(){
@@ -102,33 +125,28 @@ public class Repository {
         }
     }
 
-    public void printCustomers(){
-        int x = 0;
-        for (int i = 0; i < 5; i++){
-            System.out.println(customers.get(x).getName() + ", " + customers.get(x).getSsn() + "\nnummer: " +
-                    customers.get(x).getNumber() + "\nbetalningsmetod: " + customers.get(x).getPaymentId().getMethod()
-                    + "\n");
-            x++;
-        }
-    }
+    public String addToCart(int customer_id, int shoe_id, int order_id){
+        try{
+            Connection con = addConnection();
 
-    /*
-    public void printOrder(){
-            ResultSet rs = null;
-            try(Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
-                    p.getProperty("name"),
-                    p.getProperty("password"))){
-                CallableStatement stmt = con.prepareCall("call AddToCart(?)");
-                stmt.setString(1,name);
-                stmt.execute();
+            CallableStatement stmt = con.prepareCall("CALL AddToCart(?, ?, ?, ?)");
 
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            stmt.setInt(1, customer_id);
+            stmt.setInt(2, shoe_id);
+            stmt.setInt(3, order_id);
+            stmt.registerOutParameter(4, Types.INTEGER);
+            stmt.execute();
+
+            if (returOrderID == 0){
+                returOrderID = stmt.getInt(4);
             }
+            System.out.println(returOrderID);
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-     */
-
-
+        return "You added shoe to order";
+    }
 
     public static void main(String[] args) { new Repository();}
 }

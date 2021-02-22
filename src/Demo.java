@@ -10,17 +10,19 @@ import java.util.Scanner;
  * Copyright: MIT
  */
 public class Demo {
+
     private Repository r = new Repository();
     private Scanner sc = new Scanner(System.in);
-    public List<Product> shoeOrder = new ArrayList<>();
     private String username;
     private String password;
-    private int userChoice;
     private String userInput;
+    private String userInput2;
     private Boolean isCustomer = false;
+    public static int currentCustomerID;
 
     public Demo(){
         test();
+        System.out.println(r.returOrderID);
     }
 
     public void test() {
@@ -31,40 +33,52 @@ public class Demo {
             System.out.println("Ange ditt lösenord: ");
             password = sc.nextLine();
 
-            for (int i = 0; i < r.customers.size(); i++) {
-                if (username.equalsIgnoreCase(r.customers.get(i).getName()) && password.equalsIgnoreCase(r.customers.get(i).getPassword())) {
+            List<Customer> customerList = r.getAllCustomers();
+
+            for (int i = 0; i < customerList.size(); i++) {
+                if (username.equalsIgnoreCase(customerList.get(i).getName())
+                        && password.equalsIgnoreCase(customerList.get(i).getPassword())) {
                     isCustomer = true;
+                    currentCustomerID = customerList.get(i).getId();
                     r.printShoes();
                     addShoesToOrder();
-
-                } else
-                    System.out.println("Du har angett fel användarnamn eller lösenord.");
-                break;
+                    break;
+                }
+            }
+            if (!isCustomer){
+                System.out.println("Du har angett fel användarnamn eller lösenord, försök igen!");
             }
         }
     }
 
     public void addShoesToOrder() {
         try {
-            System.out.println("Välj vilken sko du vill lägga till din order, Ange sko nr:" +
-                    "\nOm du vill gå vidare med ordern ange \"d\", ange \"q\" om du vill avbryta ordern ");
-            userChoice = sc.nextInt();
-            userInput = sc.nextLine();
 
             while (true) {
+                System.out.println("Välj vilken sko du vill lägga till din order, Ange sko nr:" +
+                        "\nOm du vill gå vidare med ordern ange \"d\", ange \"q\" om du vill avbryta ordern ");
+                //userChoice = sc.nextInt();
+                userInput = sc.nextLine();
+
                 if (userInput.equalsIgnoreCase("q")) {
                     System.exit(0);
-                } else if (userInput.equalsIgnoreCase("d")) {
+                }
+                else if (userInput.equalsIgnoreCase("d")) {
                     System.out.println("Du är nu klar med beställningen. Vill du se din order j/n");
-                    if (userInput.equalsIgnoreCase("j")) {
+                    // hämta från added eller orders
+                    userInput2 = sc.nextLine();
+                    if (userInput2.equalsIgnoreCase("j")) {
                         printOrder();
-                    } else if (userInput.equalsIgnoreCase("n")) {
+                        break;
+                    } else if (userInput2.equalsIgnoreCase("n")) {
                         System.out.println("Tack för ditt köp.");
                         break;
                     } else
                         System.out.println("Försök igen.");
-                } else if (userChoice > 0 && userChoice < 10) {
-                    shoeOrder.add(r.products.get(userChoice));
+                }
+                else if (Integer.parseInt(userInput) > 0 && Integer.parseInt(userInput) < 10) {
+                    r.addToCart(currentCustomerID ,Integer.parseInt(userInput), r.returOrderID);
+                    System.out.println("funkar");
                 } else
                     System.out.println("Fel inmatning, testa igen");
             }
@@ -75,17 +89,21 @@ public class Demo {
     }
 
     public void printOrder() {
-        int x = 0;
+        /*int x = 0;
         for (int i = 0; i < shoeOrder.size(); i++) {
             System.out.println("Order:\nSko nr: " + "\n" + shoeOrder.get(x).getBrand().getName() + ", " + shoeOrder.get(x).getModel().getName() + "\nfärg: " +
                     shoeOrder.get(x).getColor().getType() + "\nstorlek: " + shoeOrder.get(x).getSize().getSize()
                     + "\npris: " + shoeOrder.get(x).getPrice().getAmount() + "\n");
         }
+         */
     }
 
     public static void main(String[] args) {
         new Demo();
+
     }
+
+
 
 }
 
