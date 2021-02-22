@@ -181,7 +181,50 @@ public class Repository {
     //for var el :
 
 
-    List<Product> getShoesFromOrder(List<>)
+    // List<Product> getShoesFromOrder(List<>)
+
+/*    public String addReview(String comment){
+        ResultSet rs = null;
+        String query = "CALL addReview(?)";
+
+        try {
+            Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+
+            CallableStatement stmt = con.prepareCall(query);
+
+            stmt.setString(1, comment);
+            rs = stmt.executeQuery();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "You have added a comment";
+    }*/
+
+    public String addReview(String comment, int rating_id, int review_id){
+        ResultSet result = null;
+        String query = "CALL addReview(?, ?, ?)";
+
+        try {
+            Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+
+            CallableStatement stmt = con.prepareCall(query);
+
+            stmt.setString(1, comment);
+            stmt.setInt(2, rating_id);
+            stmt.setInt(3, review_id);
+            result = stmt.executeQuery();
+            //stmt.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "You have added a comment";
+    }
 
     public static void main(String[] args) { new Repository();}
 }
