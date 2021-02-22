@@ -148,6 +148,19 @@ public class Repository {
         return "You added shoe to order";
     }
 
+
+/*    public String getProductsFromOrder(Orders order_id_input){
+        Added a = new Added();
+        if(order_id_input.equals(a.getOrderId())){
+            if (getAllShoes().)
+        }
+    }*/
+
+    //for var el :
+
+
+    List<Product> getShoesFromOrder(List<>)
+
     public static void main(String[] args) { new Repository();}
 }
 
