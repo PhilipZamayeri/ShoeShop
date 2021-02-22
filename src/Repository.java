@@ -56,8 +56,9 @@ public class Repository {
                 Sizing size = new Sizing(rs.getInt("sizing_id"), rs.getString("sizing_sys"), rs.getInt("size"));
                 Model model = new Model(rs.getInt("model_id"), rs.getString("name"), rs.getInt("year"));
                 Brand brand = new Brand(rs.getInt("brand_id"), rs.getString("brand_name"));
+                String stock = rs.getString("stock");
 
-                products.add(new Product(id, price, color, size, model, brand));
+                products.add(new Product(id, price, color, size, model, brand, stock));
             }
 
         } catch (Exception e) {
@@ -115,8 +116,9 @@ public class Repository {
                 Sizing size = new Sizing(rs.getInt("sizing_id"), rs.getString("sizing_sys"), rs.getInt("size"));
                 Model model = new Model(rs.getInt("model_id"), rs.getString("name"), rs.getInt("year"));
                 Brand brand = new Brand(rs.getInt("brand_id"), rs.getString("brand_name"));
+                String stock = rs.getString("quantity");
 
-                orders.add(new Product(id, price, color, size, model, brand));
+                orders.add(new Product(id, price, color, size, model, brand, stock));
             }
 
         } catch (Exception e) {
@@ -127,10 +129,12 @@ public class Repository {
 
     public void printOrder(List<Product> orders){
         int x = 0;
+        int totalAmount = 0;
+        System.out.println("\nDin order: ");
         for (int i = 0; i < orders.size(); i++){
-            System.out.println(orders.get(x).getBrand().getName() + ", " + orders.get(x).getModel().getName() + "\nfärg: " +
-                    orders.get(x).getColor().getType() + "\nstorlek: " + orders.get(x).getSize().getSize()
-                    + "\npris: " + orders.get(x).getPrice().getAmount() + "\n");
+            System.out.println(orders.get(x).getBrand().getName() + ", " + orders.get(x).getModel().getName() + " Färg: " +
+                    orders.get(x).getColor().getType() + " Storlek: " + orders.get(x).getSize().getSize()
+                    + " Pris: " + orders.get(x).getPrice().getAmount() + " SEK" + " Antal: " + orders.get(x).getStock());
             x++;
         }
     }
@@ -139,9 +143,9 @@ public class Repository {
         int x = 0;
         int y = 1;
         for (int i = 0; i < 9; i++){
-            System.out.println("Sko nr: " + y + "\n"+products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + "\nfärg: " +
-                    products.get(x).getColor().getType() + "\nstorlek: " + products.get(x).getSize().getSize()
-                    + "\npris: " + products.get(x).getPrice().getAmount() + "\n");
+            System.out.println("Sko nr: " + y + " Brand: "+products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + " Färg: " +
+                    products.get(x).getColor().getType() + " Storlek: " + products.get(x).getSize().getSize()
+                    + " Pris: " + products.get(x).getPrice().getAmount() + " SEK");
             x++;
             y++;
         }
@@ -162,7 +166,7 @@ public class Repository {
             if (lastInsertedID == 0){
                 lastInsertedID = stmt.getInt(4);
             }
-            System.out.println(lastInsertedID);
+            //System.out.println(lastInsertedID);
 
         }catch (Exception e){
             e.printStackTrace();
