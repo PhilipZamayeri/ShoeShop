@@ -22,7 +22,7 @@ public class Demo {
 
     public Demo(){
         test();
-        System.out.println(r.returOrderID);
+        System.out.println(r.lastInsertedID);
     }
 
     public void test() {
@@ -53,10 +53,9 @@ public class Demo {
 
     public void addShoesToOrder() {
         try {
-
             while (true) {
                 System.out.println("Välj vilken sko du vill lägga till din order, Ange sko nr:" +
-                        "\nOm du vill gå vidare med ordern ange \"d\", ange \"q\" om du vill avbryta ordern ");
+                        "\nOm du vill gå vidare med ordern ange \"d\", ange \"q\" om du vill avbryta ordern \n");
                 //userChoice = sc.nextInt();
                 userInput = sc.nextLine();
 
@@ -64,11 +63,11 @@ public class Demo {
                     System.exit(0);
                 }
                 else if (userInput.equalsIgnoreCase("d")) {
-                    System.out.println("Du är nu klar med beställningen. Vill du se din order j/n");
+                    System.out.println("Du är nu klar med beställningen. Vill du se din order j/n \n");
                     // hämta från added eller orders
                     userInput2 = sc.nextLine();
                     if (userInput2.equalsIgnoreCase("j")) {
-                        printOrder();
+                        r.printOrder(r.getOrders(r.lastInsertedID));
                         break;
                     } else if (userInput2.equalsIgnoreCase("n")) {
                         System.out.println("Tack för ditt köp.");
@@ -77,7 +76,7 @@ public class Demo {
                         System.out.println("Försök igen.");
                 }
                 else if (Integer.parseInt(userInput) > 0 && Integer.parseInt(userInput) < 10) {
-                    r.addToCart(currentCustomerID ,Integer.parseInt(userInput), r.returOrderID);
+                    r.addToCart(currentCustomerID ,Integer.parseInt(userInput), r.lastInsertedID);
                     System.out.println("funkar");
                 } else
                     System.out.println("Fel inmatning, testa igen");
@@ -86,16 +85,6 @@ public class Demo {
         catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    public void printOrder() {
-        /*int x = 0;
-        for (int i = 0; i < shoeOrder.size(); i++) {
-            System.out.println("Order:\nSko nr: " + "\n" + shoeOrder.get(x).getBrand().getName() + ", " + shoeOrder.get(x).getModel().getName() + "\nfärg: " +
-                    shoeOrder.get(x).getColor().getType() + "\nstorlek: " + shoeOrder.get(x).getSize().getSize()
-                    + "\npris: " + shoeOrder.get(x).getPrice().getAmount() + "\n");
-        }
-         */
     }
 
     public static void main(String[] args) {

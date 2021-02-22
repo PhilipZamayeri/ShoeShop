@@ -6,7 +6,12 @@
  * Copyright: MIT
  */
 public class CurrentOrder {
-    private int id;
-    private Shoe shoe;
-    private Color color;
+    private Product product;
+
+    public CurrentOrder(Product product){
+        this.product = product;
+    }
+
+    public Product getProduct(){return product;}
+
 }
