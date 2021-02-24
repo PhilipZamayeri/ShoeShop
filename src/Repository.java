@@ -28,8 +28,6 @@ public class Repository {
 
         getAllShoes();
         getAllCustomers();
-        System.out.println( getReview(1));
-
     }
 
     public Connection addConnection(){
@@ -225,6 +223,7 @@ public class Repository {
             while(rs.next()){
                 String comment = rs.getString("comment");
                 comments.add(comment);
+
             }
 
 

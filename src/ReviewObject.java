@@ -33,10 +33,7 @@ public class ReviewObject {
 
     @Override
     public String toString() {
-        return "ReviewObject{" +
-                "comments=" + comments +
-                ", averageGrade=" + averageGrade +
-                ", shoeID=" + shoeID +
-                '}';
+        return
+        "Sko nr: " + shoeID + "\nGenomsnittliga betyget: " + averageGrade + "\nKommentarer: \n" + comments;
     }
 }
