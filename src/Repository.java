@@ -207,7 +207,7 @@ public class Repository {
         return "You have added a comment";
     }*/
 
-    public String addReview(String comment, int rating_id, int review_id){
+    public String addReview(String comment, int rating_id, int customer_id){
         ResultSet result = null;
         String query = "CALL addReview(?, ?, ?)";
 
@@ -220,7 +220,8 @@ public class Repository {
 
             stmt.setString(1, comment);
             stmt.setInt(2, rating_id);
-            stmt.setInt(3, review_id);
+            stmt.setInt(3, customer_id);
+            // stmt.setInt(4, shoe_id);
             result = stmt.executeQuery();
             //stmt.execute();
 
@@ -229,6 +230,34 @@ public class Repository {
         }
         return "You have added a comment";
     }
+
+   /* public String getAverageScoreAllShoes(){
+        ResultSet result = null;
+        String query = "SELECT * FROM avg_rating_shoes";
+
+        try {
+            Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+
+            //CallableStatement stmt = con.prepareCall(query);
+            Statement stat = con.createStatement();
+            ResultSet rs = stat.executeQuery(query);
+
+
+           // result = stmt.executeQuery();
+            //stmt.execute();
+            return rs;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }*/
+
+ /*   public String readReview(){
+        ResultSet result = null;
+        String query = "SELECT * FROM avg_rating_shoes";*/
 
     public static void main(String[] args) { new Repository();}
 }
