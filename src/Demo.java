@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -126,6 +127,7 @@ public class Demo {
 
     public void addReview(){
         r.printShoes();
+        try {
         Repository r = new Repository();
         Scanner sc = new Scanner(System.in);
         String comment;
@@ -138,11 +140,22 @@ public class Demo {
             comment = sc.nextLine().trim();
             System.out.println("How many points? 1-4 ");
             rating = sc.nextInt();
-            System.out.println("Välj vilken sko du vill betygsätta: ");
-            shoe_id = sc.nextInt();
-            System.out.println(r.addReview(comment, rating, customer_id, shoe_id));
-            break;
+
+            if(rating > 0 && rating < 4){
+                System.out.println("Välj vilken sko du vill betygsätta: ");
+                shoe_id = sc.nextInt();
+                System.out.println(r.addReview(comment, Integer.parseInt(String.valueOf(rating)), customer_id, shoe_id));
+                System.exit(0);
             }
+            else{
+                System.out.println("Felaktig inmatning, prova igen");
+                addReview();
+            }
+            }
+        }catch (InputMismatchException e){
+            System.out.println("Felaktigt inmatning, välj mellan 1-4");
+            addReview();
+        }
     }
 
     public void getReview(){
