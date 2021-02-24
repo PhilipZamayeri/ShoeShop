@@ -1,6 +1,7 @@
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,12 +28,20 @@ public class Repository {
 
         getAllShoes();
         getAllCustomers();
+        System.out.println( getReview(1));
+
     }
 
-    public Connection addConnection() throws SQLException {
-        Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
-                p.getProperty("name"),
-                p.getProperty("password"));
+    public Connection addConnection(){
+        Connection con = null;
+        try {
+           con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
         return con;
     }
 
@@ -143,7 +152,7 @@ public class Repository {
         int x = 0;
         int y = 1;
         for (int i = 0; i < 9; i++){
-            System.out.println("Sko nr: " + y + " Brand: "+products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + " Färg: " +
+            System.out.println("Sko nr: " + y + " " +products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + " Färg: " +
                     products.get(x).getColor().getType() + " Storlek: " + products.get(x).getSize().getSize()
                     + " Pris: " + products.get(x).getPrice().getAmount() + " SEK");
             x++;
@@ -171,7 +180,64 @@ public class Repository {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "You added shoe to order";
+        return "Shoe added to order";
+    }
+
+    public String addReview(String comment, int rating_id, int customer_id, int shoe_id){
+        try {
+            Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+
+            CallableStatement stmt = con.prepareCall("CALL addReview(?, ?, ?, ?)");
+
+            stmt.setString(1, comment);
+            stmt.setInt(2, rating_id);
+            stmt.setInt(3, customer_id);
+            stmt.setInt(4, shoe_id);
+            stmt.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "You have added a comment";
+    }
+
+    public ReviewObject getReview(int shoe_id){
+        List<String> comments = new ArrayList<>();
+        int averageScore = 0;
+        ReviewObject ro = null;
+
+        try {
+            Connection con = DriverManager.getConnection(p.getProperty("connectionString"),
+                    p.getProperty("name"),
+                    p.getProperty("password"));
+
+            CallableStatement stmt = con.prepareCall("{? = CALL get_average_rating_from_shoe(?)}");
+            PreparedStatement pstmt = con.prepareStatement("SELECT review.comment, shoe.id FROM review\n" +
+                    "    JOIN receives ON review.id = receives.review_id\n" +
+                    "    JOIN shoe ON receives.shoe_id = shoe.id\n" +
+                    "    WHERE shoe.id = ?");
+
+            pstmt.setInt(1, shoe_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                String comment = rs.getString("comment");
+                comments.add(comment);
+            }
+
+
+            stmt.registerOutParameter(1, Types.INTEGER);
+            stmt.setInt(2, shoe_id);
+            stmt.execute();
+            averageScore = stmt.getInt(1);
+            ro = new ReviewObject(comments, averageScore, shoe_id);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ro;
     }
 
     public static void main(String[] args) { new Repository();}

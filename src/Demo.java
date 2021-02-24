@@ -25,7 +25,6 @@ public class Demo {
     }
 
     public void logIn() {
-
         while (!isCustomer) {
             System.out.print("Välkommen till webshoppen! \nAnge ditt användarnamn: ");
             System.out.flush();
@@ -63,6 +62,7 @@ public class Demo {
                     userInput = sc.nextLine();
 
                 if (userInput.equalsIgnoreCase("q")) {
+                    System.out.println("\nDu har valt att avbryta ordern.");
                     System.exit(0);
                 }
                 else if (userInput.equalsIgnoreCase("d")) {
@@ -79,7 +79,7 @@ public class Demo {
                         System.out.println("Försök igen.");
                 }
                 else if (Integer.parseInt(userInput) > 0 && Integer.parseInt(userInput) < 10) {
-                    r.addToCart(currentCustomerID ,Integer.parseInt(userInput), r.lastInsertedID);
+                    System.out.println(r.addToCart(currentCustomerID ,Integer.parseInt(userInput), r.lastInsertedID));
                 }
                 else{
                     System.out.println("Fel inmatning, testa igen");
@@ -97,10 +97,7 @@ public class Demo {
 
     public static void main(String[] args) {
         new Demo();
-
     }
-
-
 
 }
 
