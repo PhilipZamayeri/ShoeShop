@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,24 +41,7 @@ public class Demo {
                         && password.equalsIgnoreCase(customerList.get(i).getPassword())) {
                     isCustomer = true;
                     currentCustomerID = customerList.get(i).getId();
-
-                    System.out.println("Vill du handla, ange 1" +
-                            "\nVill du betygsätta en produkt, ange 2" +
-                            "\nVill du se betyg på en produkt, ange 3");
-                    int val = sc.nextInt();
-                    sc.nextLine();
-
-                    if (val == 1){
-                        r.printShoes();
-                        addShoesToOrder();
-                    }
-                    else if (val == 2){
-                        addReview();
-                    }
-                    else if (val == 3){
-                        getReview();
-                    }
-                    else System.out.println("Fel inmatning");
+                    chooseWhatToDo();
                 }
             }
             if (!isCustomer){
@@ -95,6 +79,29 @@ public class Demo {
         }
     }
 
+    public void chooseWhatToDo(){
+        int val = 0;
+        System.out.println("Vill du handla, ange 1" +
+                "\nVill du betygsätta en produkt, ange 2" +
+                "\nVill du se betyg på en produkt, ange 3");
+
+            while (true) {
+                    val = scanInt();
+                    if (val > 0 && val < 4)
+                        break;
+                    else
+                        System.out.println("Fel inmatning, testa igen!");
+            }
+                if (val == 1) {
+                    r.printShoes();
+                    addShoesToOrder();
+                } else if (val == 2) {
+                    addReview();
+                } else {
+                    getReview();
+                }
+            }
+
     public void chooseOption(){
         System.out.print("\nVälj vilken sko du vill lägga till din order, Ange sko nr:" +
                 "\nOm du vill gå vidare med ordern ange \"d\", ange \"q\" om du vill avbryta ordern: ");
@@ -126,32 +133,63 @@ public class Demo {
 
     public void addReview(){
         r.printShoes();
-        Repository r = new Repository();
-        Scanner sc = new Scanner(System.in);
-        String comment;
-        int rating;
-        int customer_id = currentCustomerID; //ändra till rätt
-        int shoe_id;                          //koppla till vald sko
+        try {
+            Repository r = new Repository();
+            Scanner sc = new Scanner(System.in);
+            String comment;
+            int rating;
+            int customer_id = currentCustomerID; //ändra till rätt
+            int shoe_id;                          //koppla till vald sko
 
-        while (true) {
-            System.out.println("\nWrite a comment: ");
-            comment = sc.nextLine().trim();
-            System.out.println("How many points? 1-4 ");
-            rating = sc.nextInt();
-            System.out.println("Välj vilken sko du vill betygsätta: ");
-            shoe_id = sc.nextInt();
-            System.out.println(r.addReview(comment, rating, customer_id, shoe_id));
-            break;
+            while (true) {
+                System.out.println("\nWrite a comment: ");
+                comment = sc.nextLine().trim();
+                System.out.println("How many points? 1-4 ");
+                rating = sc.nextInt();
+
+                if(rating > 0 && rating < 4){
+                    System.out.println("Välj vilken sko du vill betygsätta: ");
+                    shoe_id = sc.nextInt();
+                    System.out.println(r.addReview(comment, Integer.parseInt(String.valueOf(rating)), customer_id, shoe_id));
+                    System.exit(0);
+                }
+                else{
+                    System.out.println("Felaktig inmatning, prova igen");
+                    addReview();
+                }
             }
+        }catch (InputMismatchException e){
+            System.out.println("Felaktigt inmatning, välj mellan 1-4");
+            addReview();
+        }
     }
 
     public void getReview(){
         r.printShoes();
-        int shoe_id;
+        int shoe_id = 0;
         System.out.print("\nVälj vilken sko du vill se betyg på: ");
         System.out.flush();
-        shoe_id = sc.nextInt();
-        System.out.println(r.getReview(shoe_id));
+
+        while (true) {
+            shoe_id = scanInt();
+            if (shoe_id > 0 && shoe_id < 10) {
+                System.out.println(r.getReview(shoe_id));
+                break;
+            } else if (!(shoe_id > 0 && shoe_id < 10)){
+                System.out.println("Fel inmatning, testa igen!");
+            }
+        }
+    }
+
+    public int scanInt() {
+        Scanner scanner = new Scanner(System.in);
+        int inter = -1;
+        try {
+            inter = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Fel inmatning.");
+        }
+        return inter;
     }
 
     public static void main(String[] args) {
