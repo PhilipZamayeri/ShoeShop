@@ -37,12 +37,14 @@ public class Demo {
             List<Customer> customerList = r.getAllCustomers();
 
             for (int i = 0; i < customerList.size(); i++) {
+
                 if (username.equalsIgnoreCase(customerList.get(i).getName())
                         && password.equalsIgnoreCase(customerList.get(i).getPassword())) {
                     isCustomer = true;
                     currentCustomerID = customerList.get(i).getId();
+                    chooseWhatToDo();
 
-                    System.out.println("Vill du handla, ange 1" +
+/*                    System.out.println("Vill du handla, ange 1" +
                             "\nVill du betygsätta en produkt, ange 2" +
                             "\nVill du se betyg på en produkt, ange 3");
                     int val = sc.nextInt();
@@ -58,7 +60,7 @@ public class Demo {
                     else if (val == 3){
                         getReview();
                     }
-                    else System.out.println("Fel inmatning");
+                    else System.out.println("Fel inmatning");*/
                 }
             }
             if (!isCustomer){
@@ -66,6 +68,39 @@ public class Demo {
             }
         }
     }
+
+    public void chooseWhatToDo(){
+        int val = 0;
+        System.out.println("Vill du handla, ange 1" +
+                "\nVill du betygsätta en produkt, ange 2" +
+                "\nVill du se betyg på en produkt, ange 3");
+
+        while (true) {
+            val = scanInt();
+            if (val > 0 && val < 4)
+                break;
+        }
+        if (val == 1) {
+            r.printShoes();
+            addShoesToOrder();
+        } else if (val == 2) {
+            addReview();
+        } else {
+            getReview();
+        }
+    }
+
+    public int scanInt() {
+        Scanner scanner = new Scanner(System.in);
+        int inter = -1;
+        try {
+            inter = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Fel inmatning.");
+        }
+        return inter;
+    }
+
 
     public void addShoesToOrder() {
         try {
