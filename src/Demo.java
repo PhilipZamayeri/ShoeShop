@@ -85,22 +85,22 @@ public class Demo {
                 "\nVill du betygsätta en produkt, ange 2" +
                 "\nVill du se betyg på en produkt, ange 3");
 
-            while (true) {
-                    val = scanInt();
-                    if (val > 0 && val < 4)
-                        break;
-                    else
-                        System.out.println("Fel inmatning, testa igen!");
-            }
-                if (val == 1) {
-                    r.printShoes();
-                    addShoesToOrder();
-                } else if (val == 2) {
-                    addReview();
-                } else {
-                    getReview();
-                }
-            }
+        while (true) {
+            val = scanInt();
+            if (val > 0 && val < 4)
+                break;
+            else
+                System.out.println("Fel inmatning, testa igen!");
+        }
+        if (val == 1) {
+            r.printShoes();
+            addShoesToOrder();
+        } else if (val == 2) {
+            addReview();
+        } else {
+            getReview();
+        }
+    }
 
     public void chooseOption(){
         System.out.print("\nVälj vilken sko du vill lägga till din order, Ange sko nr:" +
@@ -139,7 +139,7 @@ public class Demo {
             String comment;
             int rating;
             int customer_id = currentCustomerID; //ändra till rätt
-            int shoe_id;                          //koppla till vald sko
+            int shoe_id = 0;                          //koppla till vald sko
 
             while (true) {
                 System.out.println("\nWrite a comment: ");
@@ -149,9 +149,15 @@ public class Demo {
 
                 if(rating > 0 && rating < 4){
                     System.out.println("Välj vilken sko du vill betygsätta: ");
-                    shoe_id = sc.nextInt();
-                    System.out.println(r.addReview(comment, Integer.parseInt(String.valueOf(rating)), customer_id, shoe_id));
-                    System.exit(0);
+                    while (true) {
+                        shoe_id = scanInt();
+                        if (shoe_id > 0 && shoe_id < 10) {
+                            System.out.println(r.addReview(comment, Integer.parseInt(String.valueOf(rating)), customer_id, shoe_id));
+                            System.exit(0);
+                        } else {
+                            System.out.println("Fel inmatning, testa igen!");
+                        }
+                    }
                 }
                 else{
                     System.out.println("Felaktig inmatning, prova igen");
@@ -197,4 +203,3 @@ public class Demo {
     }
 
 }
-
