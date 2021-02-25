@@ -147,7 +147,7 @@ public class Demo {
                 System.out.println("How many points? 1-4 ");
                 rating = sc.nextInt();
 
-                if(rating > 0 && rating < 4){
+                if(rating > 0 && rating < 5){
                     System.out.println("Välj vilken sko du vill betygsätta: ");
                     while (true) {
                         shoe_id = scanInt();
