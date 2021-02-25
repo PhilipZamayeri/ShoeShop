@@ -79,6 +79,9 @@ public class Demo {
             val = scanInt();
             if (val > 0 && val < 4)
                 break;
+            else if (!(val > 0 && val < 4)){
+                System.out.println("Fel inmatning, testa igen!");
+            }
         }
         if (val == 1) {
             r.printShoes();
@@ -176,9 +179,10 @@ public class Demo {
             System.out.println("How many points? 1-4 ");
             rating = sc.nextInt();
 
-            if(rating > 0 && rating < 4){
+            if(rating > 0 && rating < 5){
                 System.out.println("Välj vilken sko du vill betygsätta: ");
                 shoe_id = sc.nextInt();
+                if (shoe_id > 0 && shoe_id < 9)
                 System.out.println(r.addReview(comment, Integer.parseInt(String.valueOf(rating)), customer_id, shoe_id));
                 System.exit(0);
             }
@@ -193,14 +197,41 @@ public class Demo {
         }
     }
 
-    public void getReview(){
+/*    public void getReview(){
         r.printShoes();
         int shoe_id;
         System.out.print("\nVälj vilken sko du vill se betyg på: ");
         System.out.flush();
-        shoe_id = sc.nextInt();
-        System.out.println(r.getReview(shoe_id));
+        shoe_id = scanInt();
+
+        if(shoe_id > 0 && shoe_id < 9) {
+            System.out.println(r.getReview(shoe_id));
+            System.out.println();
+        }
+        else{
+            System.out.println("Mata in ett sko id melllan 1-9");
+            System.out.println();
+            getReview();
+        }
+    }*/
+
+    public void getReview(){
+        r.printShoes();
+        int shoe_id = 0;
+        System.out.print("\nVälj vilken sko du vill se betyg på: ");
+        System.out.flush();
+
+        while (true) {
+            shoe_id = scanInt();
+            if (shoe_id > 0 && shoe_id < 10) {
+                System.out.println(r.getReview(shoe_id));
+                break;
+            } else if (!(shoe_id > 0 && shoe_id < 10)){
+                System.out.println("Fel inmatning, testa igen!");
+            }
+        }
     }
+
 
     public static void main(String[] args) {
         new Demo();
