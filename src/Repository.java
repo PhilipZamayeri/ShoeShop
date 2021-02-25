@@ -1,9 +1,7 @@
 import java.io.FileInputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -67,7 +65,7 @@ public class Repository {
 
                 products.add(new Product(id, price, color, size, model, brand, stock));
             }
-
+            products.sort(Comparator.comparing(Product::getId));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +134,6 @@ public class Repository {
 
     public void printOrder(List<Product> orders){
         int x = 0;
-        int totalAmount = 0;
         System.out.println("\nDin order: ");
         for (int i = 0; i < orders.size(); i++){
             System.out.println(orders.get(x).getBrand().getName() + ", " + orders.get(x).getModel().getName() + " Färg: " +
@@ -149,7 +146,7 @@ public class Repository {
     public void printShoes(){
         int x = 0;
         int y = 1;
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < products.size(); i++){
             System.out.println("Sko nr: " + y + " " +products.get(x).getBrand().getName() + ", " + products.get(x).getModel().getName() + " Färg: " +
                     products.get(x).getColor().getType() + " Storlek: " + products.get(x).getSize().getSize()
                     + " Pris: " + products.get(x).getPrice().getAmount() + " SEK");
